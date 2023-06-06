@@ -1,0 +1,22 @@
+{
+  "name": "unitestingtask",
+  "version": "0.0.1",
+  "description": "Unit testing task",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage"
+  },
+  "main": "unitTestingTask.js",
+  "keywords": [],
+  "author": "Daniel Gonzalez",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "unitTestingTask.js"
+    ]
+  }
+}
