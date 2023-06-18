@@ -1,3 +1,4 @@
+const moment = require('moment-timezone');
 const unitTestingTask = require('../unitTestingTask');
 
 describe('unitTestingTask', () => {
@@ -160,9 +161,12 @@ describe('unitTestingTask', () => {
   });
 
   describe('Timezone formats', () => {
+    const date = moment.tz('2023/8/24 4:7:5', 'America/Los_Angeles');
+    const timezoneOffset = moment(date).utcOffset(moment().utcOffset()).format('Z');
+
     test('Format Z returns timezone offset with colon', () => {
-      const formattedDate = unitTestingTask('Z', new Date('2023/8/24 4:7:5'));
-      expect(formattedDate).toBe('-05:00');
+      const formattedDate = unitTestingTask('Z', date.toDate());
+      expect(formattedDate).toBe(timezoneOffset);
     });
 
     test('Format ZZ returns timezone offset without colon', () => {
@@ -170,7 +174,7 @@ describe('unitTestingTask', () => {
         'ZZ',
         new Date(2023, 7, 4, 16, 7, 5)
       );
-      expect(formattedDate).toBe('-0500');
+      expect(formattedDate).toBe(timezoneOffset.replace(':', ''));
     });
   });
 
