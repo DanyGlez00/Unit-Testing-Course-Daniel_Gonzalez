@@ -3,160 +3,92 @@ const unitTestingTask = require('../unitTestingTask');
 
 describe('unitTestingTask', () => {
   describe('Year formats', () => {
-    test('Format YYYY returns the full year', () => {
-      const formattedDate = unitTestingTask('YYYY', new Date('2023-08'));
-      expect(formattedDate).toBe('2023');
-    });
-
-    test('Format YY returns last 2 digits of year', () => {
-      const formattedDate = unitTestingTask('YY', new Date(2023, 7));
-      expect(formattedDate).toBe('23');
+    test.each([
+      ['Format YYYY returns the full year', 'YYYY', new Date('2023-08'), '2023'],
+      ['Format YY returns last 2 digits of year', 'YY', new Date(2023, 7), '23']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
-
+  
   describe('Month formats', () => {
-    test('Format MMMM returns full name of month', () => {
-      const formattedDate = unitTestingTask('MMMM', new Date('2023/08/24'));
-      expect(formattedDate).toBe('August');
-    });
-
-    test('Format MMM returns short name of month', () => {
-      const formattedDate = unitTestingTask('MMM', new Date(2023, 7, 24));
-      expect(formattedDate).toBe('Aug');
-    });
-
-    test('Format MM returns month with leading zeroes', () => {
-      const formattedDate = unitTestingTask('MM', new Date('2023/08/24'));
-      expect(formattedDate).toBe('08');
-    });
-
-    test('Format M returns month without leading zeroes', () => {
-      const formattedDate = unitTestingTask('M', new Date(2023, 7, 24));
-      expect(formattedDate).toBe('8');
+    test.each([
+      ['Format MMMM returns full name of month', 'MMMM', new Date('2023/08/24'), 'August'],
+      ['Format MMM returns short name of month', 'MMM', new Date(2023, 7, 24), 'Aug'],
+      ['Format MM returns month with leading zeroes', 'MM', new Date('2023/08/24'), '08'],
+      ['Format M returns month without leading zeroes', 'M', new Date(2023, 7, 24), '8']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
   describe('Day formats', () => {
-    test('Format DDD returns full name of day', () => {
-      const formattedDate = unitTestingTask('DDD', new Date('2023/08/24'));
-      expect(formattedDate).toBe('Thursday');
-    });
-
-    test('Format DD returns short name of day', () => {
-      const formattedDate = unitTestingTask('DD', new Date(2023, 7, 24));
-      expect(formattedDate).toBe('Thu');
-    });
-
-    test('Format D returns min name of day', () => {
-      const formattedDate = unitTestingTask('D', new Date(2023, 7, 24));
-      expect(formattedDate).toBe('Th');
-    });
-
-    test('Format dd returns day with leading zeroes', () => {
-      const formattedDate = unitTestingTask('dd', new Date('2023/8/4'));
-      expect(formattedDate).toBe('04');
-    });
-
-    test('Format d returns day without leading zeroes', () => {
-      const formattedDate = unitTestingTask('d', new Date(2023, 7, 4));
-      expect(formattedDate).toBe('4');
+    test.each([
+      ['Format DDD returns full name of day', 'DDD', new Date('2023/08/24'), 'Thursday'],
+      ['Format DD returns short name of day', 'DD', new Date(2023, 7, 24), 'Thu'],
+      ['Format D returns min name of day', 'D', new Date(2023, 7, 24), 'Th'],
+      ['Format dd returns day with leading zeroes', 'dd', new Date('2023/8/4'), '04'],
+      ['Format d returns day without leading zeroes', 'd', new Date(2023, 7, 4), '4']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
   describe('Hour formats', () => {
-    test('Format HH returns hour in 24-hour clock with leading zeroes', () => {
-      const formattedDate = unitTestingTask('HH', new Date('2023/8/4 4:00'));
-      expect(formattedDate).toBe('04');
-    });
-
-    test('Format H returns hour in 24-hour clock without leading zeroes', () => {
-      const formattedDate = unitTestingTask('H', new Date(2023, 7, 4, 4));
-      expect(formattedDate).toBe('4');
-    });
-
-    test('Format hh returns hour with leading zeroes in 12-hr format', () => {
-      const formattedDate = unitTestingTask('hh', new Date('2023/8/4 18:00'));
-      expect(formattedDate).toBe('06');
-    });
-
-    test('Format hh returns 12 without leading zeroes', () => {
-      const formattedDate = unitTestingTask('hh', new Date('2023/8/4 12:00'));
-      expect(formattedDate).toBe('12');
-    });
-
-    test('Format h returns hour without leading zeroes in 12-hr format', () => {
-      const formattedDate = unitTestingTask('h', new Date(2023, 7, 4, 12));
-      expect(formattedDate).toBe('12');
+    test.each([
+      ['Format HH returns hour in 24-hour clock with leading zeroes', 'HH', new Date('2023/8/4 4:00'), '04'],
+      ['Format H returns hour in 24-hour clock without leading zeroes', 'H', new Date(2023, 7, 4, 4), '4'],
+      ['Format hh returns hour with leading zeroes in 12-hr format', 'hh', new Date('2023/8/4 18:00'), '06'],
+      ['Format hh returns 12 without leading zeroes', 'hh', new Date('2023/8/4 12:00'), '12'],
+      ['Format h returns hour without leading zeroes in 12-hr format', 'h', new Date(2023, 7, 4, 12), '12']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
   describe('Minute formats', () => {
-    test('Format mm returns minutes with leading zeroes', () => {
-      const formattedDate = unitTestingTask('mm', new Date('2023/8/24 4:7'));
-      expect(formattedDate).toBe('07');
-    });
-
-    test('Format m returns minutes without leading zeroes', () => {
-      const formattedDate = unitTestingTask('m', new Date(2023, 7, 4, 4, 7));
-      expect(formattedDate).toBe('7');
+    test.each([
+      ['Format mm returns minutes with leading zeroes', 'mm', new Date('2023/8/24 4:7'), '07'],
+      ['Format m returns minutes without leading zeroes', 'm', new Date(2023, 7, 4, 4, 7), '7']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
   describe('Second formats', () => {
-    test('Format ss returns seconds with leading zeroes', () => {
-      const formattedDate = unitTestingTask('ss', new Date('2023/8/24 4:7:5'));
-      expect(formattedDate).toBe('05');
-    });
-
-    test('Format s returns seconds without leading zeroes', () => {
-      const formattedDate = unitTestingTask('s', new Date(2023, 7, 4, 4, 7, 5));
-      expect(formattedDate).toBe('5');
+    test.each([
+      ['Format ss returns seconds with leading zeroes', 'ss', new Date('2023/8/24 4:7:5'), '05'],
+      ['Format s returns seconds without leading zeroes', 's', new Date(2023, 7, 4, 4, 7, 5), '5']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
   describe('Milliseconds formats', () => {
-    test('Format ff returns milliseconds with leading zeroes', () => {
-      const formattedDate = unitTestingTask(
-        'ff',
-        new Date('2023/8/24 4:7:5.1')
-      );
-      expect(formattedDate).toBe('100');
-    });
-
-    test('Format f returns milliseconds without leading zeroes', () => {
-      const formattedDate = unitTestingTask(
-        'f',
-        new Date(2023, 7, 4, 4, 7, 5, 10)
-      );
-      expect(formattedDate).toBe('10');
+    test.each([
+      ['Format ff returns milliseconds with leading zeroes', 'ff', new Date('2023/8/24 4:7:5.1'), '100'],
+      ['Format f returns milliseconds without leading zeroes', 'f', new Date(2023, 7, 4, 4, 7, 5, 10), '10']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
   describe('AM/PM formats', () => {
-    test('Format A returns AM in uppercase', () => {
-      const formattedDate = unitTestingTask('A', new Date('2023/8/24 4:7:5'));
-      expect(formattedDate).toBe('AM');
-    });
-
-    test('Format a returns AM in lowercase', () => {
-      const formattedDate = unitTestingTask(
-        'a',
-        new Date(2023, 7, 4, 11, 7, 5)
-      );
-      expect(formattedDate).toBe('am');
-    });
-
-    test('Format A returns PM in uppercase', () => {
-      const formattedDate = unitTestingTask('A', new Date('2023/8/24 13:7:5'));
-      expect(formattedDate).toBe('PM');
-    });
-
-    test('Format a returns PM in lowercase', () => {
-      const formattedDate = unitTestingTask(
-        'a',
-        new Date(2023, 7, 4, 13, 7, 5)
-      );
-      expect(formattedDate).toBe('pm');
+    test.each([
+      ['Format A returns AM in uppercase', 'A', new Date('2023/8/24 4:7:5'), 'AM'],
+      ['Format a returns AM in lowercase', 'a', new Date(2023, 7, 4, 11, 7, 5), 'am'],
+      ['Format A returns PM in uppercase', 'A', new Date('2023/8/24 13:7:5'), 'PM'],
+      ['Format a returns PM in lowercase', 'a', new Date(2023, 7, 4, 13, 7, 5), 'pm']
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
@@ -164,30 +96,22 @@ describe('unitTestingTask', () => {
     const date = moment.tz('2023/8/24 4:7:5', 'America/Los_Angeles');
     const timezoneOffset = moment(date).utcOffset(moment().utcOffset()).format('Z');
 
-    test('Format Z returns timezone offset with colon', () => {
-      const formattedDate = unitTestingTask('Z', date.toDate());
-      expect(formattedDate).toBe(timezoneOffset);
-    });
-
-    test('Format ZZ returns timezone offset without colon', () => {
-      const formattedDate = unitTestingTask(
-        'ZZ',
-        new Date(2023, 7, 4, 16, 7, 5)
-      );
-      expect(formattedDate).toBe(timezoneOffset.replace(':', ''));
+    test.each([
+      ['Format Z returns timezone offset with colon', 'Z', date.toDate(), timezoneOffset],
+      ['Format ZZ returns timezone offset without colon', 'ZZ', new Date(2023, 7, 4, 16, 7, 5), timezoneOffset.replace(':', '')]
+    ])('%s', (description, format, date, expected) => {
+      const formattedDate = unitTestingTask(format, date);
+      expect(formattedDate).toBe(expected);
     });
   });
 
   describe('Error cases', () => {
-    test('should throw TypeError if format argument is not a string', () => {
+    test.each([
+      ['should throw TypeError if format argument is not a string', 123],
+      ['should throw TypeError if date argument is not a valid type', true]
+    ])('%s', (description, arg) => {
       expect(() => {
-        unitTestingTask(123);
-      }).toThrow(TypeError);
-    });
-
-    test('should throw TypeError if date argument is not a valid type', () => {
-      expect(() => {
-        unitTestingTask('YYYY-MM-DD', true);
+        unitTestingTask(arg);
       }).toThrow(TypeError);
     });
   });
@@ -208,21 +132,15 @@ describe('unitTestingTask', () => {
   });
 
   describe('Date assignment', () => {
-    test('should assign current date when no arguments are provided', () => {
-      const result = unitTestingTask('YYYY');
-      const currentDate = new Date();
-      const expectedYear = currentDate.getFullYear().toString();
-
-      expect(result).toContain(expectedYear);
-    });
-
-    test('should assign current date when only one argument is provided and it is not a valid date', () => {
-      const invalidDate = '2023-06-01T10:00:00Z';
-      const result = unitTestingTask('YYYY', invalidDate);
-      const currentDate = new Date();
-      const expectedYear = currentDate.getFullYear().toString();
-
-      expect(result).toContain(expectedYear);
+    const currentDate = new Date();
+    const expectedYear = currentDate.getFullYear().toString();
+    const invalidDate = '2023-06-01T10:00:00Z';
+    test.each([
+      ['should assign current date when no arguments are provided', 'YYYY', expectedYear],
+      ['should assign current date when only one argument is provided and it is not a valid date', ('YYYY', invalidDate), expectedYear]
+    ])('%s', (description, format, expected) => {
+      const result = unitTestingTask(format);
+      expect(result).toContain(expected);
     });
   });
 
@@ -236,16 +154,12 @@ describe('unitTestingTask', () => {
       unitTestingTask.lang('en');
     });
 
-    test('should be "en" by default', () => {
-      expect(unitTestingTask.lang()).toBe('en');
-    });
-
-    test('should update current language when lang is provided and no options are provided', () => {
-      expect(unitTestingTask.lang('ru')).toBe('ru');
-    });
-
-    test('should handle error when loading language module for Belarusian (be)', () => {
-      expect(unitTestingTask.lang('be')).toBe('en');
+    test.each([
+      ['should return current language when no arguments are provided', undefined, 'en'],
+      ['should return current language when no options are provided', 'ru', 'ru'],
+      ['should handle error when loading language module for Belarusian (be)', 'be', 'en']
+    ])('%s', (description, lang, expected) => {
+      expect(unitTestingTask.lang(lang)).toBe(expected);
     });
   });
 });
